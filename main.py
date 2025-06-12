@@ -65,8 +65,12 @@ class EmailSender(QWidget):
         sig_base = os.path.splitext(sig_file)[0]
         sig_files_dir = os.path.join(sig_dir, f"{sig_base}_files")
 
-        with open(sig_path, "r", encoding="utf-8") as f:
-            html = f.read()
+        try:
+            with open(sig_path, "r", encoding="utf-8") as f:
+                html = f.read()
+        except UnicodeDecodeError:
+            with open(sig_path, "r", encoding="cp1252") as f:
+                html = f.read()
 
         return html, sig_files_dir
 
